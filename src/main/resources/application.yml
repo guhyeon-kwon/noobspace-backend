@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    hikari:
+      connectionTimeout: 30000
+      maximum-pool-size: 30
+      maxLifetime : 1000000
+    url: jdbc:mariadb://localhost:3306/test
+    username: test
+    password: test1811!
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        use_sql_comments: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+
+property:
+  secretKey: 4Iib9nWLE2Q^20$D
+  tokenExpiresTime: 60
+  refreshTokenExpiresTime: 60
