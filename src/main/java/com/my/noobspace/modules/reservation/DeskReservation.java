@@ -5,6 +5,8 @@ import com.my.noobspace.modules.desk.Desk;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -24,6 +26,12 @@ public class DeskReservation {
     @OneToOne
     @JoinColumn(name = "account_id")
     private Account account;
+
+    // 예약 시간
+    private LocalDateTime reservationAt;
+
+    // 체크인 시간
+    private LocalDateTime checkInAt;
 
     private boolean checkIn = false;
 }

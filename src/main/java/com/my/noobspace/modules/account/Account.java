@@ -1,6 +1,7 @@
 package com.my.noobspace.modules.account;
 
 import com.my.noobspace.modules.role.Role;
+import com.my.noobspace.modules.team.Team;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,7 +28,8 @@ public class Account {
 
     private String password; // 비밀번호
 
-    private String team; // 팀명
+    @ManyToOne
+    private Team team; // 팀명
 
     @Lob
     @Basic(fetch = FetchType.EAGER)

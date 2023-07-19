@@ -1,5 +1,6 @@
 package com.my.noobspace.modules.desk;
 
+import com.my.noobspace.modules.zone.Zone;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,12 +13,10 @@ public class Desk {
 
     private String title; // 좌석명
 
-    private String zone; // 좌석구역
-
     private Integer floor; // 층
 
     private String description; // 좌석설명
 
     @Lob @Basic(fetch = FetchType.EAGER)
-    private String image; // 좌석 이미지
+    private String deskImage; // 좌석 이미지
 }
