@@ -1,5 +1,6 @@
 package com.my.noobspace.modules.account;
 
+import com.my.noobspace.modules.account.dto.SignUpFormDto;
 import com.my.noobspace.modules.role.Role;
 import com.my.noobspace.modules.team.Team;
 import jakarta.persistence.*;
@@ -38,6 +39,18 @@ public class Account {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> role = new ArrayList<>(); // 권한
 
-    private boolean push = true; // 푸시 여부
+    @Builder.Default
+    private Integer push = 0; // 푸시 여부 0: 푸시안함, 1: 푸시함
+
+    Account(SignUpFormDto dto) {
+        this.email = dto.getEmail();
+        this.name = dto.getName();
+        this.password = dto.getPassword();
+        this.profileImage = dto.getProfileImage();
+    }
+
+    public static Account from(SignUpFormDto dto){
+        return new Account(dto);
+    }
 
 }
