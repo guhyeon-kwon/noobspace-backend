@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class DeskReservation {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -33,5 +33,5 @@ public class DeskReservation {
     // 체크인 시간
     private LocalDateTime checkInAt;
 
-    private boolean checkIn = false;
+    private Integer checkIn = 0; // 0: 체크인 안함, 1: 체크인 함
 }

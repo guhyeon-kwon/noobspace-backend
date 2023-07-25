@@ -15,14 +15,14 @@ import java.util.List;
 @NoArgsConstructor
 public class Team {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
     private String description;
 
-    @OneToMany
-    @JoinColumn(name = "account_id")
+
+    @OneToMany(mappedBy = "team")
     private List<Account> account;
 }

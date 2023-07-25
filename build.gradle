@@ -29,9 +29,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket:3.0.4'
     implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.4'
 
-    // redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.0.4'
-
     // JWT
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.19.2'
 

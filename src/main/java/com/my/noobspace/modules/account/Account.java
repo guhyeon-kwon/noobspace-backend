@@ -19,7 +19,7 @@ import java.util.List;
 public class Account {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
@@ -30,13 +30,15 @@ public class Account {
     private String password; // 비밀번호
 
     @ManyToOne
+    @JoinColumn(name = "team_id")
     private Team team; // 팀명
 
     @Lob
-    @Basic(fetch = FetchType.EAGER)
+    @Basic(fetch = FetchType.LAZY)
     private String profileImage; // 프로필 이미지
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
     private List<Role> role = new ArrayList<>(); // 권한
 
     @Builder.Default
