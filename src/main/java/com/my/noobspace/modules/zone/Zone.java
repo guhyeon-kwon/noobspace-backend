@@ -22,7 +22,6 @@ public class Zone {
 
     private String description;
 
-    @OneToMany
-    @JoinColumn(name = "desk_id")
+    @OneToMany(mappedBy = "zone")
     private List<Desk> desk;
 }

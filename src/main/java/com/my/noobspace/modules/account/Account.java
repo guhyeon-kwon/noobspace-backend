@@ -29,6 +29,8 @@ public class Account {
 
     private String password; // 비밀번호
 
+    private String phone; // 전화번호
+
     @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team; // 팀명

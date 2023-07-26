@@ -24,6 +24,8 @@ public class SignUpFormDto {
     @NotBlank(message = "비밀번호확인은 필수 입력 값입니다.")
     @Size(min = 8, max = 16, message = "비밀번호는 8자 이상 16자 이하로 입력해주세요.")
     private String confirmPassword;
-    private String team;
+    @NotBlank
+    @Pattern(regexp = "\\b\\d{9,11}\\b", message = "올바른 형식의 휴대폰 번호를 입력해주세요 ex) 01012345678 -> O / 010-1234-5678 -> X")
+    private String phone;
     private String profileImage;
 }
