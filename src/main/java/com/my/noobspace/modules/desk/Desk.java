@@ -37,6 +37,7 @@ public class Desk {
         this.floor = dto.getFloor();
         this.description = dto.getDescription();
         this.fix = dto.getFix();
+        this.deskImage = dto.getDeskImage();
     }
 
     public static Desk from(DeskReqDto dto){

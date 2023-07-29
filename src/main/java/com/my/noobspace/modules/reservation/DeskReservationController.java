@@ -1,10 +1,13 @@
 package com.my.noobspace.modules.reservation;
 
+import com.my.noobspace.modules.account.AccountService;
+import com.my.noobspace.modules.desk.DeskService;
 import com.my.noobspace.modules.reservation.dto.req.DeskReservationReqDto;
 import com.my.noobspace.utils.ErrorObject;
 import com.my.noobspace.utils.ReturnObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -13,13 +16,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class DeskReservationController {
 
     private final DeskReservationService deskReservationService;
+    private final AccountService accountService;
+    private final DeskService deskService;
 
     @PostMapping("/reservation")
-    public ResponseEntity<ReturnObject> reservation(DeskReservationReqDto dto) {
+    public ResponseEntity<ReturnObject> reservation(@AuthenticationPrincipal String email, DeskReservationReqDto dto) {
         ReturnObject returnObject;
         ErrorObject errorObject;
 
-        Long insert = deskReservationService.insert(dto);
+        DeskReservation insert = deskReservationService.insert(dto);
 
         if (insert != null) {
             returnObject = ReturnObject.builder().success(true).build();

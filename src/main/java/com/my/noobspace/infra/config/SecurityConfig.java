@@ -11,6 +11,7 @@ import com.my.noobspace.modules.account.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -53,7 +54,8 @@ public class SecurityConfig {
         // csrf 공격에 안전하고 매번 csrf 토큰을 받기 않기 때문에 불필요)
         http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login/**", "/user/token/refresh", "/user/check-email-code**", "/user/password/reset").permitAll()
+                .requestMatchers("/login/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/account").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
         );
         // 스프링 시큐리티가 세션을 생성하지 않고 기존 세션을 사용하지도 않음(JWT 사용을 위함)

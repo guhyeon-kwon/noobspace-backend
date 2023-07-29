@@ -2,6 +2,7 @@ package com.my.noobspace.modules.reservation;
 
 import com.my.noobspace.modules.account.Account;
 import com.my.noobspace.modules.desk.Desk;
+import com.my.noobspace.modules.reservation.dto.req.DeskReservationReqDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,6 +33,6 @@ public class DeskReservation {
 
     // 체크인 시간
     private LocalDateTime checkInAt;
-
+    @Builder.Default
     private Integer checkIn = 0; // 0: 체크인 안함, 1: 체크인 함
 }

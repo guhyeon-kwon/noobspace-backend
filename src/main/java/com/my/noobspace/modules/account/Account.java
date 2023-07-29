@@ -50,6 +50,7 @@ public class Account {
         this.email = dto.getEmail();
         this.name = dto.getName();
         this.password = dto.getPassword();
+        this.phone = dto.getPhone();
         this.profileImage = dto.getProfileImage();
     }
 

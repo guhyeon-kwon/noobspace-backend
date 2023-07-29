@@ -22,24 +22,12 @@ import static com.my.noobspace.modules.reservation.QDeskReservation.deskReservat
 public class DeskReservationQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
-    public Long insert(DeskReservationReqDto dto) {
+    public Boolean exist(String email) {
+        Integer fetchOne = jpaQueryFactory.selectOne()
+                .from(deskReservation)
+                .where(deskReservation.account.email.eq(email))
+                .fetchFirst();
 
-        Account findAccount = jpaQueryFactory.selectFrom(account)
-                .where(account.email.eq(dto.getAccountEmail()))
-                .fetchOne();
-
-        return jpaQueryFactory
-                .insert(deskReservation)
-                .columns(deskReservation.desk.id,
-                        deskReservation.account.id,
-                        deskReservation.checkInAt,
-                        deskReservation.checkIn,
-                        deskReservation.reservationAt)
-                .values(dto.getDeskId(),
-                        findAccount.getId(),
-                        null,
-                        0,
-                        LocalDateTime.now())
-                .execute();
+        return fetchOne != null;
     }
 }

@@ -21,11 +21,27 @@ public class AccountQueryRepository {
                 .where(account.email.eq(email))
                 .fetchOne();
 
+        if (findAccount == null) {
+            return;
+        }
+
         Team findTeam = jpaQueryFactory.selectFrom(team)
                 .where(team.id.eq(teamId))
                 .fetchOne();
 
-        assert findAccount != null;
+        if (findTeam == null) {
+            return;
+        }
+
         findAccount.setTeam(findTeam);
+    }
+
+    public Boolean exist(String email) {
+        Integer fetchOne = jpaQueryFactory.selectOne()
+                .from(account)
+                .where(account.email.eq(email))
+                .fetchFirst();
+
+        return fetchOne != null;
     }
 }

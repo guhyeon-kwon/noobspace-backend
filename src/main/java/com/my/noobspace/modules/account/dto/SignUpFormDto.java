@@ -28,4 +28,6 @@ public class SignUpFormDto {
     @Pattern(regexp = "\\b\\d{9,11}\\b", message = "올바른 형식의 휴대폰 번호를 입력해주세요 ex) 01012345678 -> O / 010-1234-5678 -> X")
     private String phone;
     private String profileImage;
+    @NotBlank
+    private String roleName;
 }

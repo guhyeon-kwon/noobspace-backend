@@ -43,13 +43,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     // 유저 인증
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
-        log.info("Username is : {}", username);
+        log.info("email is : {}", email);
         log.info("Password is : {}", password);
 
         // 요청에서 받아온 유저 정보로 토큰 발급
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
 
         // 토큰으로 인증 수행하고 결과 반환
         return authenticationManager.authenticate(authenticationToken);
@@ -68,13 +68,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         Map<String, Object> token = CommonUtil.getToken(accountObj, request);
 
-        Account userDetail = accountRepository.findByEmail(user.getUsername());
+        Account accountDetail = accountRepository.findByEmail(user.getUsername());
 
         Map<String, Object> resultObject = new HashMap<>();
 
         resultObject.put("access_token", token.get("access_token"));
-        resultObject.put("refresh_token", token.get("refresh_token"));
-        resultObject.put("name", userDetail.getName());
+        resultObject.put("email", accountDetail);
 
         String encodedValue = URLEncoder.encode("Bearer " + token.get("refresh_token"), "UTF-8") ;
 

@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeskServiceImpl implements DeskService {
 
-    private final DeskQueryRepository deskQueryRepository;
+    private final DeskRepository deskRepository;
     @Override
     public void insert(DeskReqDto dto) {
-        deskQueryRepository.insert(dto);
+        Desk fromDesk = Desk.from(dto);
+        deskRepository.save(fromDesk);
     }
 }
