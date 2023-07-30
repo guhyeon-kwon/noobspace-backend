@@ -44,7 +44,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 try {
                     // 토크만 추출 하도록 type부분 제거
                     String token = authorizationHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("bvxmhnogsaqbaxzzsfvvpvodk".getBytes());
+                    Algorithm algorithm = Algorithm.HMAC256("4Iib9nWLE2Q^20$D".getBytes());
                     // JWT 검증용 객체 생성(토큰 생성할때와 동일한 알고리즘 적용)
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     // 토큰 검증

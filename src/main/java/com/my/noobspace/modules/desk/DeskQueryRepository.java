@@ -20,4 +20,10 @@ import static com.my.noobspace.modules.reservation.QDeskReservation.deskReservat
 public class DeskQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    public Desk findById(Long id) {
+        return jpaQueryFactory.selectFrom(desk)
+                .where(desk.id.eq(id))
+                .fetchOne();
+    }
 }

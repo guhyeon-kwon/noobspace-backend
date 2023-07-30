@@ -5,5 +5,5 @@ import com.my.noobspace.modules.reservation.dto.req.DeskReservationReqDto;
 
 public interface DeskReservationService {
     // 좌석 예약
-    DeskReservation insert(DeskReservationReqDto dto);
+    DeskReservation reservation(DeskReservationReqDto dto);
 }

@@ -7,6 +7,7 @@ import com.my.noobspace.infra.error.RestSuccessHandler;
 import com.my.noobspace.infra.filter.CustomAuthenticationFilter;
 import com.my.noobspace.infra.filter.CustomAuthorizationFilter;
 import com.my.noobspace.infra.filter.JwtExceptionFilter;
+import com.my.noobspace.modules.account.AccountQueryRepository;
 import com.my.noobspace.modules.account.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -35,6 +38,8 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final AccountRepository accountRepository;
+
+    private final AccountQueryRepository accountQueryRepository;
 
     @Bean
     public WebSecurityCustomizer configure() {
@@ -54,15 +59,20 @@ public class SecurityConfig {
         // csrf 공격에 안전하고 매번 csrf 토큰을 받기 않기 때문에 불필요)
         http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/account").hasAnyAuthority("ROLE_ADMIN")
-                .anyRequest().authenticated()
+                        .requestMatchers("/login/**").permitAll()
+//                .requestMatchers(HttpMethod.POST, "/account").hasAnyAuthority("ROLE_ADMIN")
+                        .anyRequest().authenticated()
         );
         // 스프링 시큐리티가 세션을 생성하지 않고 기존 세션을 사용하지도 않음(JWT 사용을 위함)
         http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.exceptionHandling(ex -> ex
                 .accessDeniedHandler(accessDeniedHandler())
                 .authenticationEntryPoint(authenticationEntryPoint())
+        );
+        http.formLogin(form -> form
+                .loginPage("/login")
+                .usernameParameter("email")
+                .permitAll()
         );
         // jwt 인증을 위한 커스텀 인증 필터 추가
         http.addFilter(customAuthenticationFilter);
@@ -73,6 +83,17 @@ public class SecurityConfig {
         http.httpBasic(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String email) {
+                UserDetails userDetails = (UserDetails) accountQueryRepository.findByEmail(email);
+                return (UserDetails) accountQueryRepository.findByEmail(email);
+            }
+        };
     }
 
 

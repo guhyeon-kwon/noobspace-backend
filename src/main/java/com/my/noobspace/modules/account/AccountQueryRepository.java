@@ -44,4 +44,10 @@ public class AccountQueryRepository {
 
         return fetchOne != null;
     }
+
+    public Account findByEmail(String email) {
+        return jpaQueryFactory.selectFrom(account)
+                .where(account.email.eq(email))
+                .fetchOne();
+    }
 }

@@ -1,5 +1,6 @@
 package com.my.noobspace.modules.reservation;
 
+import com.my.noobspace.modules.account.Account;
 import com.my.noobspace.modules.account.AccountService;
 import com.my.noobspace.modules.desk.DeskService;
 import com.my.noobspace.modules.reservation.dto.req.DeskReservationReqDto;
@@ -20,11 +21,11 @@ public class DeskReservationController {
     private final DeskService deskService;
 
     @PostMapping("/reservation")
-    public ResponseEntity<ReturnObject> reservation(@AuthenticationPrincipal String email, DeskReservationReqDto dto) {
+    public ResponseEntity<ReturnObject> reservation(@AuthenticationPrincipal Account account, DeskReservationReqDto dto) {
         ReturnObject returnObject;
         ErrorObject errorObject;
 
-        DeskReservation insert = deskReservationService.insert(dto);
+        DeskReservation insert = deskReservationService.reservation(dto);
 
         if (insert != null) {
             returnObject = ReturnObject.builder().success(true).build();
