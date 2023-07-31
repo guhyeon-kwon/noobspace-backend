@@ -58,22 +58,23 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     // 인증 성공시
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-        User user = (User) authentication.getPrincipal();
+        Account account = (Account) authentication.getPrincipal();
 
         Account account_domain = new Account();
-        account_domain.setEmail(user.getUsername());
-        account_domain.setPassword(user.getPassword());
+        account_domain.setEmail(account.getEmail());
+        account_domain.setPassword(account.getPassword());
 
-        Account accountObj = accountRepository.findByEmail(user.getUsername());
+        Account accountObj = accountRepository.findByEmail(account.getEmail());
 
         Map<String, Object> token = CommonUtil.getToken(accountObj, request);
 
-        Account accountDetail = accountRepository.findByEmail(user.getUsername());
+        Account accountDetail = accountRepository.findByEmail(account.getEmail());
 
         Map<String, Object> resultObject = new HashMap<>();
 
         resultObject.put("access_token", token.get("access_token"));
-        resultObject.put("email", accountDetail);
+        resultObject.put("name", accountDetail.getName());
+//        resultObject.put("email", accountDetail);
 
         String encodedValue = URLEncoder.encode("Bearer " + token.get("refresh_token"), "UTF-8") ;
 

@@ -7,8 +7,10 @@ import com.my.noobspace.infra.error.RestSuccessHandler;
 import com.my.noobspace.infra.filter.CustomAuthenticationFilter;
 import com.my.noobspace.infra.filter.CustomAuthorizationFilter;
 import com.my.noobspace.infra.filter.JwtExceptionFilter;
+import com.my.noobspace.modules.account.Account;
 import com.my.noobspace.modules.account.AccountQueryRepository;
 import com.my.noobspace.modules.account.AccountRepository;
+import com.my.noobspace.modules.account.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +24,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -31,6 +34,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -87,12 +91,12 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String email) {
-                UserDetails userDetails = (UserDetails) accountQueryRepository.findByEmail(email);
-                return (UserDetails) accountQueryRepository.findByEmail(email);
+        return (UserDetailsService) email -> {
+            Optional<Account> account = accountRepository.findAccountByEmail(email);
+            if(account.isEmpty()) {
+                throw new UsernameNotFoundException("No account found with email: " + email);
             }
+            return account.get();
         };
     }
 

@@ -3,11 +3,14 @@ package com.my.noobspace.modules.account;
 import com.my.noobspace.modules.account.dto.SignUpFormDto;
 import com.my.noobspace.modules.role.Role;
 import com.my.noobspace.modules.role.RoleQueryRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +37,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void addTeam(String email, Long teamId) {
         accountQueryRepository.update(email, teamId);
+    }
+
+    @Override
+    @Transactional
+    public Optional<Account> findAccountByEmail(String email) {
+        return accountRepository.findAccountByEmail(email);
     }
 }
