@@ -11,5 +11,4 @@ import java.time.LocalDateTime;
 @Builder
 public class DeskReservationReqDto {
     private Long deskId;
-    private String accountEmail;
 }

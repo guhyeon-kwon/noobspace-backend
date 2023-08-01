@@ -49,7 +49,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     // 토큰 검증
                     DecodedJWT decodedJWT = verifier.verify(token);
-                    String username = decodedJWT.getSubject();
+                    String email = decodedJWT.getSubject();
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     // roles안에 있는 권한들을 SimpleGrantedAuthority 객체로 만들어 리턴
@@ -57,7 +57,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                         authorities.add(new SimpleGrantedAuthority(role));
                     });
                     UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(username, null, authorities);
+                            new UsernamePasswordAuthenticationToken(email, null, authorities);
                     // 인증된 유저 정보를 Authentication 객체에 등록
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     // 나머지 필터가 계속 진행되도록 필터체인 호출
