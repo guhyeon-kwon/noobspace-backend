@@ -52,5 +52,13 @@ public class DeskReservationServiceImpl implements DeskReservationService{
         DeskReservation findDeskReservation = deskReservationQueryRepository.findByEmailAndDeskId(email, deskId);
         deskReservationRepository.delete(findDeskReservation);
     }
+
+    @Override
+    public void checkin(String email, Long reservationId) {
+        if (!deskReservationQueryRepository.existByReservationId(email, reservationId)) {
+            throw new NullPointerException("존재하지 않는 예약입니다.");
+        }
+        deskReservationQueryRepository.checkin(email, reservationId);
+    }
 }
 

@@ -41,10 +41,34 @@ public class DeskReservationQueryRepository {
         return fetchOne != null;
     }
 
+    public Boolean existByReservationId(String email, Long reservationId) {
+        Integer fetchOne = jpaQueryFactory.selectOne()
+                .from(deskReservation)
+                .where(deskReservation.account.email.eq(email))
+                .where(deskReservation.id.eq(reservationId))
+                .fetchFirst();
+
+        return fetchOne != null;
+    }
+
     public DeskReservation findByEmailAndDeskId(String email, Long deskId) {
         return jpaQueryFactory.selectFrom(deskReservation)
                 .where(deskReservation.account.email.eq(email))
                 .where(deskReservation.desk.id.eq(deskId))
                 .fetchOne();
+    }
+
+    public void checkin(String email, Long reservationId) {
+        DeskReservation findDeskReservation = jpaQueryFactory.selectFrom(deskReservation)
+                .where(deskReservation.account.email.eq(email))
+                .where(deskReservation.id.eq(reservationId))
+                .fetchOne();
+
+        if (findDeskReservation.getCheckIn() == 1) {
+            throw new NullPointerException("이미 체크인이 완료된 예약입니다.");
+        }
+
+        findDeskReservation.setCheckInAt(LocalDateTime.now());
+        findDeskReservation.setCheckIn(1);
     }
 }

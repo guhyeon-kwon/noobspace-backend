@@ -55,4 +55,21 @@ public class DeskReservationController {
             return ResponseEntity.ok().body(returnObject);
         }
     }
+
+    // 체크인
+    @PostMapping("/checkin/{reservationId}")
+    public ResponseEntity<ReturnObject> checkin(@AuthenticationPrincipal String email, @PathVariable Long reservationId){
+        ReturnObject returnObject;
+        ErrorObject errorObject;
+
+        try{
+            deskReservationService.checkin(email, reservationId);
+            returnObject = ReturnObject.builder().success(true).build();
+            return ResponseEntity.ok().body(returnObject);
+        } catch (Exception ex){
+            errorObject = ErrorObject.builder().code("reservation_cancel_exception").message(ex.getMessage()).build();
+            returnObject = ReturnObject.builder().success(false).error(errorObject).build();
+            return ResponseEntity.ok().body(returnObject);
+        }
+    }
 }

@@ -11,4 +11,6 @@ public interface DeskReservationService {
     DeskReservation reservation(String email, Long deskId) throws InstanceAlreadyExistsException;
 
     void cancel(String email, Long deskId);
+
+    void checkin(String email, Long reservationId);
 }
