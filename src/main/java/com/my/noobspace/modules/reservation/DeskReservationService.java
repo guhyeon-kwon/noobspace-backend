@@ -9,4 +9,6 @@ import javax.management.InstanceAlreadyExistsException;
 public interface DeskReservationService {
     // 좌석 예약
     DeskReservation reservation(String email, Long deskId) throws InstanceAlreadyExistsException;
+
+    void cancel(String email, Long deskId);
 }

@@ -30,4 +30,21 @@ public class DeskReservationQueryRepository {
 
         return fetchOne != null;
     }
+
+    public Boolean existByEmailAndDeskId(String email, Long deskId) {
+        Integer fetchOne = jpaQueryFactory.selectOne()
+                .from(deskReservation)
+                .where(deskReservation.account.email.eq(email))
+                .where(deskReservation.desk.id.eq(deskId))
+                .fetchFirst();
+
+        return fetchOne != null;
+    }
+
+    public DeskReservation findByEmailAndDeskId(String email, Long deskId) {
+        return jpaQueryFactory.selectFrom(deskReservation)
+                .where(deskReservation.account.email.eq(email))
+                .where(deskReservation.desk.id.eq(deskId))
+                .fetchOne();
+    }
 }

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -21,6 +22,7 @@ public class DeskReservationController {
 
     private final DeskReservationService deskReservationService;
 
+    // 좌석예약
     @PostMapping("/reservation/{id}")
     public ResponseEntity<ReturnObject> reservation(@AuthenticationPrincipal String email, @PathVariable Long id) {
         ReturnObject returnObject;
@@ -32,6 +34,23 @@ public class DeskReservationController {
             return ResponseEntity.ok().body(returnObject);
         } catch (Exception ex){
             errorObject = ErrorObject.builder().code("reservation_exception").message(ex.getMessage()).build();
+            returnObject = ReturnObject.builder().success(false).error(errorObject).build();
+            return ResponseEntity.ok().body(returnObject);
+        }
+    }
+
+    // 예약취소
+    @DeleteMapping("/reservation/{id}")
+    public ResponseEntity<ReturnObject> cancel(@AuthenticationPrincipal String email, @PathVariable Long id){
+        ReturnObject returnObject;
+        ErrorObject errorObject;
+
+        try{
+            deskReservationService.cancel(email, id);
+            returnObject = ReturnObject.builder().success(true).build();
+            return ResponseEntity.ok().body(returnObject);
+        } catch (Exception ex){
+            errorObject = ErrorObject.builder().code("reservation_cancel_exception").message(ex.getMessage()).build();
             returnObject = ReturnObject.builder().success(false).error(errorObject).build();
             return ResponseEntity.ok().body(returnObject);
         }
