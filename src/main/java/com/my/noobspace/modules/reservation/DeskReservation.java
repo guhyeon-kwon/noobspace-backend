@@ -28,6 +28,9 @@ public class DeskReservation {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    // 예약 생성 시간
+    private LocalDateTime createdAt;
+
     // 예약 시간
     private LocalDateTime reservationAt;
 

@@ -4,11 +4,8 @@ import com.my.noobspace.modules.account.Account;
 import com.my.noobspace.modules.account.AccountQueryRepository;
 import com.my.noobspace.modules.desk.Desk;
 import com.my.noobspace.modules.desk.DeskQueryRepository;
-import com.my.noobspace.modules.desk.DeskRepository;
-import com.my.noobspace.modules.reservation.dto.DeskReservationDto;
-import com.my.noobspace.modules.reservation.dto.req.DeskReservationReqDto;
+import com.nimbusds.oauth2.sdk.util.singleuse.AlreadyUsedException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -22,7 +19,7 @@ public class DeskReservationServiceImpl implements DeskReservationService{
     private final DeskQueryRepository deskQueryRepository;
     private final AccountQueryRepository accountQueryRepository;
     @Override
-    public DeskReservation reservation(String email, Long deskId) throws InstanceAlreadyExistsException {
+    public DeskReservation reservation(String email, Long deskId, LocalDateTime reservationAt) throws InstanceAlreadyExistsException {
 
         if (deskReservationQueryRepository.exist(email)) {
             throw new InstanceAlreadyExistsException("이미 예약한 좌석이 있습니다.");
@@ -38,7 +35,8 @@ public class DeskReservationServiceImpl implements DeskReservationService{
         DeskReservation deskReservation = DeskReservation.builder()
                 .desk(findDesk)
                 .account(findAccount)
-                .reservationAt(LocalDateTime.now())
+                .reservationAt(reservationAt)
+                .createdAt(LocalDateTime.now())
                 .build();
         return deskReservationRepository.save(deskReservation);
     }
@@ -54,7 +52,7 @@ public class DeskReservationServiceImpl implements DeskReservationService{
     }
 
     @Override
-    public void checkin(String email, Long reservationId) {
+    public void checkin(String email, Long reservationId) throws AlreadyUsedException {
         if (!deskReservationQueryRepository.existByReservationId(email, reservationId)) {
             throw new NullPointerException("존재하지 않는 예약입니다.");
         }

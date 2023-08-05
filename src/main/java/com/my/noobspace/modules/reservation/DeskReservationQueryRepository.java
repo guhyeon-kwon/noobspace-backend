@@ -3,6 +3,7 @@ package com.my.noobspace.modules.reservation;
 import com.my.noobspace.modules.account.Account;
 import com.my.noobspace.modules.desk.Desk;
 import com.my.noobspace.modules.reservation.dto.req.DeskReservationReqDto;
+import com.nimbusds.oauth2.sdk.util.singleuse.AlreadyUsedException;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -58,14 +59,14 @@ public class DeskReservationQueryRepository {
                 .fetchOne();
     }
 
-    public void checkin(String email, Long reservationId) {
+    public void checkin(String email, Long reservationId) throws AlreadyUsedException {
         DeskReservation findDeskReservation = jpaQueryFactory.selectFrom(deskReservation)
                 .where(deskReservation.account.email.eq(email))
                 .where(deskReservation.id.eq(reservationId))
                 .fetchOne();
 
         if (findDeskReservation.getCheckIn() == 1) {
-            throw new NullPointerException("이미 체크인이 완료된 예약입니다.");
+            throw new AlreadyUsedException("이미 체크인이 완료된 예약입니다.");
         }
 
         findDeskReservation.setCheckInAt(LocalDateTime.now());

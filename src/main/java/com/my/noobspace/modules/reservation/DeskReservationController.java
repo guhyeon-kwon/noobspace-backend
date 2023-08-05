@@ -1,22 +1,19 @@
 package com.my.noobspace.modules.reservation;
 
-import com.my.noobspace.modules.account.Account;
-import com.my.noobspace.modules.account.AccountService;
-import com.my.noobspace.modules.desk.DeskService;
 import com.my.noobspace.modules.reservation.dto.req.DeskReservationReqDto;
 import com.my.noobspace.utils.ErrorObject;
 import com.my.noobspace.utils.ReturnObject;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-import javax.management.InstanceAlreadyExistsException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class DeskReservationController {
 
@@ -24,12 +21,15 @@ public class DeskReservationController {
 
     // 좌석예약
     @PostMapping("/reservation/{id}")
-    public ResponseEntity<ReturnObject> reservation(@AuthenticationPrincipal String email, @PathVariable Long id) {
+    public ResponseEntity<ReturnObject> reservation(@AuthenticationPrincipal String email, @RequestBody @Valid DeskReservationReqDto dto, @PathVariable Long id) {
         ReturnObject returnObject;
         ErrorObject errorObject;
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime reservationAtFormat = LocalDateTime.parse(dto.getReservationAt(), formatter);
+
         try{
-            deskReservationService.reservation(email, id);
+            deskReservationService.reservation(email, id, reservationAtFormat);
             returnObject = ReturnObject.builder().success(true).build();
             return ResponseEntity.ok().body(returnObject);
         } catch (Exception ex){
