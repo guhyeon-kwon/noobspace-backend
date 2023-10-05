@@ -1,8 +1,7 @@
 package com.my.noobspace.modules.desk;
 
 import com.my.noobspace.modules.account.Account;
-import com.my.noobspace.modules.account.dto.SignUpFormDto;
-import com.my.noobspace.modules.desk.dto.req.DeskReqDto;
+import com.my.noobspace.modules.desk.dto.req.DeskSaveReqDto;
 import com.my.noobspace.modules.zone.Zone;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,7 +31,7 @@ public class Desk {
     @Lob @Basic(fetch = FetchType.EAGER)
     private String deskImage; // 좌석 이미지
 
-    Desk(DeskReqDto dto) {
+    Desk(DeskSaveReqDto dto) {
         this.name = dto.getName();
         this.floor = dto.getFloor();
         this.description = dto.getDescription();
@@ -40,7 +39,7 @@ public class Desk {
         this.deskImage = dto.getDeskImage();
     }
 
-    public static Desk from(DeskReqDto dto){
+    public static Desk from(DeskSaveReqDto dto){
         return new Desk(dto);
     }
 }

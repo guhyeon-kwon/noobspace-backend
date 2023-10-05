@@ -1,10 +1,6 @@
 package com.my.noobspace.modules.account;
 
 import com.my.noobspace.modules.account.dto.SignUpFormDto;
-import com.my.noobspace.modules.desk.DeskService;
-import com.my.noobspace.modules.reservation.DeskReservationService;
-import com.my.noobspace.modules.reservation.dto.req.DeskReservationReqDto;
-import com.my.noobspace.utils.CommonUtil;
 import com.my.noobspace.utils.ErrorObject;
 import com.my.noobspace.utils.ReturnObject;
 import com.my.noobspace.utils.SignUpFormValidator;
@@ -12,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -20,8 +15,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor

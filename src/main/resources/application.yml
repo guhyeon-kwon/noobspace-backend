@@ -26,7 +26,6 @@ spring:
       host: localhost
       port: 6379
 
-
 property:
   secretKey: 4Iib9nWLE2Q^20$D
   tokenExpiresTime: 60

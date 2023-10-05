@@ -3,7 +3,7 @@ package com.my.noobspace;
 import com.my.noobspace.modules.account.AccountService;
 import com.my.noobspace.modules.account.dto.SignUpFormDto;
 import com.my.noobspace.modules.desk.DeskService;
-import com.my.noobspace.modules.desk.dto.req.DeskReqDto;
+import com.my.noobspace.modules.desk.dto.req.DeskSaveReqDto;
 import com.my.noobspace.modules.role.Role;
 import com.my.noobspace.modules.role.RoleRepository;
 import com.my.noobspace.modules.team.TeamService;
@@ -87,14 +87,14 @@ public class NoobspaceApplication {
     }
 
     public void addDesk(){
-        DeskReqDto from = DeskReqDto.builder()
+        DeskSaveReqDto from = DeskSaveReqDto.builder()
                 .name("A1")
                 .floor(1)
                 .zoneId(1L)
                 .fix(0)
                 .description("벽쪽 A1 책상")
                 .build();
-        DeskReqDto from2 = DeskReqDto.builder()
+        DeskSaveReqDto from2 = DeskSaveReqDto.builder()
                 .name("A2")
                 .floor(1)
                 .zoneId(1L)

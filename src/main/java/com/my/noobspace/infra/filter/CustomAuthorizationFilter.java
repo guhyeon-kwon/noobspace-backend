@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,10 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 // 사용자의 모든 요청을 가로채고 토큰을 찾아 처리한 다음 사용자가 특정 리소스에 액세스 할 수 있는지 여부를 결정하는 필터
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+
+//    @Value("${property.secretKey}")
+//    private String SECRET_KEY;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 사용자가 로그인을 시도한다면
